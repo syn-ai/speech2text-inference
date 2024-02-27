@@ -1,0 +1,21 @@
+version: "3"
+services:
+  speech2text:
+    build: .
+    ports: 
+      - 7098:7098
+    volumes:
+      - .:/app
+    working_dir: /app
+    environment:
+      - CUDA_VISIBLE_DEVICES=3
+    command:
+      - bash
+      - ollama_start.sh
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
+              count: 4

@@ -1,0 +1,10 @@
+.env
+*.bin
+main
+whisper.cpp
+in
+out
+output
+.venv
+__pycache__
+main

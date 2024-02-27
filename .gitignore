@@ -1,0 +1,9 @@
+.venv
+venv
+*.bin
+*.gguf
+*.mp3
+*.wav
+*.mp4
+*.mkv
+
