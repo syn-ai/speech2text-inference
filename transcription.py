@@ -9,9 +9,9 @@ from utilities.data_models import TranscriptionRequest
 from utilities.endpoint_configs import EndpointConfigManager
 
 manager = EndpointConfigManager()
-config = manager.stt
-inpath = "stt_generation/in"
-outpath = "stt_generation/out"
+config = manager.speech2text
+inpath = "speech2text_generation/in"
+outpath = "speech2text_generation/out"
 load_dotenv()
 
 router = APIRouter()

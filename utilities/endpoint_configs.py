@@ -2,7 +2,6 @@ import os
 from loguru import logger
 from utilities.data_models import (
     EndpointConfig,
-    EndpointManager,
     ConfigManager,
     EndpointLabels,
     EndpointMap,
@@ -17,24 +16,11 @@ class EndpointConfigManager(ConfigManager):
         super().__init__()
         self.environment = os.getenv("environment")
         self.version = os.getenv("version")
-        self.endpoint_map = EndpointMap().model_dump()
-        self.endpoint_label = EndpointLabels().model_dump()
+        self.endpoint_map = EndpointMap().dict()
+        self.endpoint_label = EndpointLabels().dict()
         self.url_map = {}
-        self.art = self.get_config("comfy")
+        self.speech2text = self.get_config("speech2text")
         self.all_config = self.set_all_config()
-
-    def set_configs(self):
-        self.environment = str(os.getenv("environment"))
-        self.version = str(os.getenv("version"))
-        self.baseurl = str(os.getenv("baseurl"))
-        self.mixtral = self.get_config("mixtral")
-        self.mistral = self.get_config("mistral")
-        self.code = self.get_config("code")
-        self.llava = self.get_config("llava")
-        self.bakllava = self.get_config("bakllava")
-        self.endpoint_map = EndpointMap.model_dump()
-        self.endpoint_labels = EndpointLabels.model_dump()
-        self.url_map = {}
 
     def _set_config(self, labels) -> None:
         for key, value in labels.items():
@@ -43,9 +29,9 @@ class EndpointConfigManager(ConfigManager):
     def set_all_config(self):
         self.all_config = {}
         for key, value in self.endpoint_map.items():
-            self.url_map[
-                key
-            ] = f"http://{self.hub.host}:{self.hub.port}{self.version}{value}"
+            self.url_map[key] = (
+                f"http://{self.speech2text.host}:{self.speech2text.port}{self.version}{value}"
+            )
         for key, value in os.environ.items():
             self.all_config[key] = value
             return self.all_config
@@ -54,7 +40,7 @@ class EndpointConfigManager(ConfigManager):
         return self.endpoint_map[endpoint]
 
     def get_url(self, host, port, endpoint):
-        return f"http://{host}:{port}{self.version}{endpoint}"
+        return f"http://{host}:{port}{endpoint}"
 
     def get_config(self, value: str):
         host = handle_error(os.getenv(f"{self.environment}_{value}_host"), value)
@@ -81,7 +67,8 @@ def handle_error(input, value):
 
 
 def getEndpointConfigManager():
-    return EndpointConfigManager()
+    config_manager = EndpointConfigManager()
+    return config_manager
 
 
 def main():

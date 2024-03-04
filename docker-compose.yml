@@ -10,8 +10,8 @@ services:
     environment:
       - CUDA_VISIBLE_DEVICES=3
     command:
-      - bash
-      - ollama_start.sh
+      - python3
+      - api.py
     deploy:
       resources:
         reservations:

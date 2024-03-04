@@ -11,7 +11,7 @@ from utilities.endpoint_configs import EndpointConfigManager
 
 manager = EndpointConfigManager()
 
-config = manager.stt
+config = manager.speech2text
 
 
 def transcribe(
@@ -25,12 +25,16 @@ def transcribe(
     # normal
 
     transcription_request = TranscriptionRequest(
-        data=data
-    ).model_dump()
+        temperature=temperature,
+        temperature_inc=temperature_inc,
+        response_format=response_format,
+        data=data,
+    )
+    logger.debug(transcription_request)
 
     resp = requests.post(
-        url=f"http://0.0.0.0:7098{manager.version}{config.endpoint}",
-        json=transcription_request,
+        url=f"http://{config.host}:{config.port}{config.endpoint}",
+        json=transcription_request.model_dump(),
         timeout=6000,
     )
     if resp.status_code == 200:
@@ -41,4 +45,4 @@ def transcribe(
 
 
 if __name__ == "__main__":
-    transcribe()
+    transcribe("in/test.wav")
