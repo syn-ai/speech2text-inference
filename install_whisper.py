@@ -274,7 +274,7 @@ class TranscriptionManager:
         data = self.read_data(inpath=input_path)
         base64_data = self.tobase64(data)
         request = self.transcription_request(data=base64_data, filename=filename)
-        output_path = f"output/{'filename'}.txt"
+        output_path = f"out/{'filename'}.txt"
         self.write_data(outpath=output_path, data=request)
         print(request)
         return request

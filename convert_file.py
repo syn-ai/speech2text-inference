@@ -38,7 +38,12 @@ def parse_args():
     args = parser.parse_args()
     return args
 
+def main(file_path=None):
+    if file_path is None:
+        file_path = parse_args().file_path
+    convert_to_wav(file_path)
+
+
 
 if __name__ == "__main__":
-    file_path = parse_args().file_path
-    convert_to_wav(file_path)
+    main()

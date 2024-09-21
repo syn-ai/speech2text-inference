@@ -6,4 +6,7 @@ venv
 *.wav
 *.mp4
 *.mkv
-
+*__pycache__
+*.pyc
+.env
+whisper.cpp
